@@ -1,0 +1,19 @@
+[project]
+name = "ncm_catcher"
+version = "1.0.0"
+description = "从Windows窗口标题获取PC端网易云音乐当前播放歌名并支持写入文件，可通过OBS读取"
+authors = [
+    {name = "Nya-WSL",email = "support@nya-wsl.com"}
+]
+license = {text = "MIT"}
+readme = "README.md"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "pywin32 (>=310,<311)",
+    "pyinstaller (>=6.13.0,<7.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
