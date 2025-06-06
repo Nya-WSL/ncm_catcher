@@ -1,8 +1,15 @@
 import win32gui, os, json, time, re
 
-version = "1.0.0"
+version = "1.0.1"
+
 
 def get_netease_music_info():
+    """_summary_: 获取网易云音乐当前播放歌曲信息
+
+    Returns:
+        _dict_: _{"song": "歌名"}_
+    """
+
     # 网易云音乐主窗口类名
     MAIN_WINDOW_CLASS = "OrpheusBrowserHost"
 
@@ -30,19 +37,26 @@ def get_netease_music_info():
     except Exception as e:
         return {"error": f"系统错误: {str(e)}"}
 
+
 def write_file(song_info):
+    """_summary_: 将歌曲信息写入文件
+
+    Args:
+        song_info (_dict_): _包含歌名的字典_
+    """
     with open("config.json", "r", encoding="utf-8") as f:
         config = json.load(f)
 
     num = 1
 
     if os.path.exists(config["save_path"]):
-        with open(config["save_path"], 'r', encoding='utf-8') as f:
+        with open(config["save_path"], "r", encoding="utf-8") as f:
             info = f.readlines()
         num = len(info) + 1
 
-    with open(config["save_path"], 'a+', encoding='utf-8') as file:
+    with open(config["save_path"], "a+", encoding="utf-8") as file:
         file.write(f'{num}{config["order_number"]}{song_info["song"]}\n')
+
 
 def switch_save():
     with open("config.json", "r", encoding="utf-8") as f:
@@ -55,6 +69,7 @@ def switch_save():
 
     return config["save_to_file"]
 
+
 def set_path():
     path = input("请输入保存路径(后缀为.txt，例：D:\music.txt)：")
     with open("config.json", "r", encoding="utf-8") as f:
@@ -63,13 +78,13 @@ def set_path():
     if not path:  # 处理空路径
         main()
     else:
-        if re.match(r'^[a-zA-Z]:', path):
-            normalized_path = os.path.normpath(path) # 标准化路径
+        if re.match(r"^[a-zA-Z]:", path):
+            normalized_path = os.path.normpath(path)  # 标准化路径
 
             if os.path.isdir(normalized_path):
                 path = os.path.join(normalized_path, "songs.txt")
 
-            elif normalized_path.endswith(os.sep) or normalized_path.endswith('/'):
+            elif normalized_path.endswith(os.sep) or normalized_path.endswith("/"):
                 path = os.path.join(normalized_path, "songs.txt")
 
             else:
@@ -90,6 +105,7 @@ def set_path():
 
     os.system("cls")
     main()
+
 
 def get_info():
     with open("config.json", "r", encoding="utf-8") as f:
@@ -112,6 +128,7 @@ def get_info():
             if config.get("save_to_file", True):
                 write_file(song_info)
 
+
 def get_info_loop():
     with open("config.json", "r", encoding="utf-8") as f:
         config = json.load(f)
@@ -124,7 +141,7 @@ def get_info_loop():
         last_song = None
         while True:
             song_info = get_netease_music_info()
-            song = song_info['song']
+            song = song_info["song"]
 
             if "error" in song_info:
                 print("错误:", song_info["error"])
@@ -141,16 +158,19 @@ def get_info_loop():
 
     main()
 
+
 def main():
     with open("config.json", "r", encoding="utf-8") as f:
         config = json.load(f)
 
-    print(f'''1. 获取歌名
+    print(
+        f"""1. 获取歌名
 2. 自动获取歌名
 3. 设置保存路径({config.get("save_path", None)})
 4. 设置序号({config["order_number"]})
 4. 开关保存至文件({"开启" if config.get("save_to_file", True) else "关闭"})
-''')
+"""
+    )
 
     choice = input("选项：")
     if choice == "1":
@@ -188,10 +208,12 @@ def main():
 if __name__ == "__main__":
     if not os.path.exists("config.json"):
         with open("config.json", "w", encoding="utf-8") as f:
-            json.dump({"save_to_file": True,
-                       "order_number": ".",
-                       "rate": 5
-                       }, f, ensure_ascii=False, indent=4)
+            json.dump(
+                {"save_to_file": True, "order_number": ".", "rate": 5},
+                f,
+                ensure_ascii=False,
+                indent=4,
+            )
     else:
         with open("config.json", "r", encoding="utf-8") as f:
             config = json.load(f)
