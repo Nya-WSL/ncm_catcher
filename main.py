@@ -168,7 +168,7 @@ def main():
 2. 自动获取歌名
 3. 设置保存路径({config.get("save_path", None)})
 4. 设置序号({config["order_number"]})
-4. 开关保存至文件({"开启" if config.get("save_to_file", True) else "关闭"})
+5. 开关保存至文件({"开启" if config.get("save_to_file", True) else "关闭"})
 """
     )
 
