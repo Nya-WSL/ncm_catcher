@@ -1,0 +1,1 @@
+uv run pyinstaller -F main.py -i Nya-WSL.ico -w --name ncm_catcher
